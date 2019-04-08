@@ -1,0 +1,48 @@
+{
+  "name": "jupyterlab-prodigy",
+  "version": "0.0.1",
+  "description": "A JupyterLab extension for annotating machine learning training sets using Prodigy",
+  "keywords": [
+    "jupyter",
+    "jupyterlab",
+    "jupyterlab-extension",
+    "prodigy",
+    "annotation"
+  ],
+  "homepage": "https://github.com/explosionai/jupyterlab-prodigy",
+  "bugs": {
+    "url": "https://github.com/explosionai/jupyterlab-prodigy/issues"
+  },
+  "license": "MIT",
+  "author": "Explosion AI",
+  "files": [
+    "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
+    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/explosionai/jupyterlab-prodigy.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf lib",
+    "prepare": "npm run clean && npm run build",
+    "prettier": "prettier --write '{!(package),src/**,!(lib)/**}{.js,.jsx,.ts,.tsx,.css,.json,.md}'",
+    "watch": "tsc -w"
+  },
+  "dependencies": {
+    "@jupyterlab/application": "^1.0.0-alpha.3",
+    "@jupyterlab/notebook": "^1.0.0-alpha.3",
+    "@jupyterlab/console": "^1.0.0-alpha.3"
+  },
+  "devDependencies": {
+    "prettier": "^1.11.1",
+    "rimraf": "^2.6.1",
+    "typescript": "~3.1.1"
+  },
+  "jupyterlab": {
+    "extension": true
+  }
+}
