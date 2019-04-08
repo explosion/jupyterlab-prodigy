@@ -1,0 +1,15 @@
+:root {
+  --jp-icon-explisionai: url('./icon.svg');
+}
+
+.jp-prodigyWidget iframe {
+  height: 100%;
+  width: 100%;
+  /* padding: 20px; */
+  box-sizing: border-box;
+}
+
+.jp-prodigyIcon {
+  background-image: var(--jp-icon-explisionai);
+  background-size: contain;
+}
