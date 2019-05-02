@@ -7,6 +7,8 @@ import { INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
 
 import { Kernel } from '@jupyterlab/services';
 
+import { IConsoleTracker, ConsolePanel } from '@jupyterlab/console';
+
 import { Message } from '@phosphor/messaging';
 
 import { Widget } from '@phosphor/widgets';
@@ -51,7 +53,7 @@ class ProdigyIFrameWidget extends Widget {
   // }
 
   /**
-   * The image element associated with the widget.
+   * The iframe element associated with the widget.
    */
   readonly iframe: HTMLIFrameElement;
 }
@@ -59,14 +61,24 @@ class ProdigyIFrameWidget extends Widget {
 /**
  * Activate the extension.
  */
-function activate(app: JupyterFrontEnd, notebooks: INotebookTracker) {
-  // When a notebook is created
-  notebooks.widgetAdded.connect((sender, notebook: NotebookPanel) => {
-    const { session } = notebook;
-    // When a notebook session is created
+function activate(
+  app: JupyterFrontEnd,
+  notebooks: INotebookTracker,
+  consoles: IConsoleTracker
+) {
+  // Watch messages for notebook and console sessions
+  function watchMessages(
+    sender: INotebookTracker | IConsoleTracker,
+    panel: NotebookPanel | ConsolePanel
+  ): void {
+    const { session } = panel;
+    // When a session is created
     session.ready.then(() => {
       // Handle kernel messages that are output from prodigy server
-      function handleMessage(sender: Kernel.IKernel, args: Kernel.IAnyMessageArgs) {
+      function handleMessage(
+        sender: Kernel.IKernel,
+        args: Kernel.IAnyMessageArgs
+      ) {
         const { msg } = args;
         if (
           msg.header.msg_type === 'stream' &&
@@ -86,7 +98,7 @@ function activate(app: JupyterFrontEnd, notebooks: INotebookTracker) {
           widget.update();
         }
       }
-      // When a new kernel
+      // Start watching kernel messages
       function handleKernel() {
         const { kernel } = session;
         session.kernel.ready
@@ -98,16 +110,22 @@ function activate(app: JupyterFrontEnd, notebooks: INotebookTracker) {
       handleKernel();
       session.kernelChanged.connect(handleKernel);
     });
-  });
+  }
+
+  // Watch notebook creation
+  notebooks.widgetAdded.connect(watchMessages);
+
+  // Watch console creation
+  consoles.widgetAdded.connect(watchMessages);
 }
 
 /**
- * Initialization data for the jupyterlab-prodigy extension.
+ * Create jupyterlab-prodigy extension.
  */
 const extension: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab-prodigy',
   autoStart: true,
-  requires: [INotebookTracker],
+  requires: [INotebookTracker, IConsoleTracker],
   activate: activate
 };
 
