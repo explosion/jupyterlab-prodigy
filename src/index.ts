@@ -3,6 +3,8 @@ import {
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
+import { Dialog, IClientSession, showDialog } from '@jupyterlab/apputils';
+
 import { INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
 
 import { Kernel } from '@jupyterlab/services';
@@ -19,7 +21,11 @@ class ProdigyIFrameWidget extends Widget {
   /**
    * Construct a new ProdigyIFrameWidget.
    */
-  constructor(id: string, url: string = '//localhost:8080') {
+  constructor(
+    id: string,
+    url: string = '//localhost:8080',
+    session: IClientSession
+  ) {
     super();
     this.id = id;
     this.title.label = 'Prodigy';
@@ -36,6 +42,10 @@ class ProdigyIFrameWidget extends Widget {
     this.iframe.src = url;
     this.iframe.setAttribute('baseURI', url);
     this.node.appendChild(this.iframe);
+
+    this.port = url.match(/\/\/.+:(\d{4})/)[1];
+
+    this.session = session;
   }
 
   /**
@@ -48,14 +58,41 @@ class ProdigyIFrameWidget extends Widget {
   /**
    * Handle close requests for the widget.
    */
-  // onCloseRequest(msg: Message): void {
-  //   // TODO: Kill prodigy server
-  // }
+  onCloseRequest(msg: Message): void {
+    void showDialog({
+      title: 'Unsaved Changes',
+      body: 'Do you want to close with unsaved changes?',
+      buttons: [
+        Dialog.cancelButton({ label: 'No' }),
+        Dialog.okButton({ label: 'Yes' })
+      ]
+    }).then(result => {
+      if (result.button.accept) {
+        this.session.kernel.requestExecute(
+          {
+            code: `!lsof -t -i tcp:${this.port} | xargs kill`
+          },
+          true
+        );
+        this.dispose();
+      }
+    });
+  }
 
   /**
    * The iframe element associated with the widget.
    */
   readonly iframe: HTMLIFrameElement;
+
+  /**
+   * The iframe element associated with the widget.
+   */
+  readonly port: string;
+
+  /**
+   * The client session associoated with the widget.
+   */
+  readonly session: IClientSession;
 }
 
 /**
@@ -74,37 +111,32 @@ function activate(
     const { session } = panel;
     // When a session is created
     session.ready.then(() => {
-      // Handle kernel messages that are output from prodigy server
-      function handleMessage(
-        sender: Kernel.IKernel,
-        args: Kernel.IAnyMessageArgs
-      ) {
-        const { msg } = args;
-        if (
-          msg.header.msg_type === 'stream' &&
-          (msg.content.text as string).match(
-            /Open the app in your browser and start annotating!/
-          )
-        ) {
-          const id = msg.header.msg_id;
-          const url = (msg.content.text as string).match(
-            /Starting the web server at (.+) \.\.\./
-          )[1];
-          const widget = new ProdigyIFrameWidget(id, url);
-          app.shell.add(widget, 'main', {
-            activate: true,
-            mode: 'split-right'
-          });
-          widget.update();
-        }
-      }
       // Start watching kernel messages
       function handleKernel() {
         const { kernel } = session;
         session.kernel.ready
           .then(() => Kernel.connectTo(kernel.model))
           .then(kernel => {
-            kernel.anyMessage.connect(handleMessage);
+            kernel.anyMessage.connect((sender, args) => {
+              const { msg } = args;
+              if (
+                msg.header.msg_type === 'stream' &&
+                (msg.content.text as string).match(
+                  /Open the app in your browser and start annotating!/
+                )
+              ) {
+                const id = msg.header.msg_id;
+                const url = (msg.content.text as string).match(
+                  /Starting the web server at (.+) \.\.\./
+                )[1];
+                const widget = new ProdigyIFrameWidget(id, url, session);
+                app.shell.add(widget, 'main', {
+                  activate: true,
+                  mode: 'split-right'
+                });
+                widget.update();
+              }
+            });
           });
       }
       handleKernel();
