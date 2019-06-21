@@ -74,17 +74,10 @@ class ProdigyIFrameWidget extends Widget {
         Dialog.okButton({ label: 'Yes' })
       ]
     }).then(result => {
-      if (result.button.accept) {
-        if (this.session) {
-          this.session.kernel.requestExecute(
-            {
-              code: `!lsof -t -i tcp:${this.port} | xargs kill`
-            },
-            true
-          );
-        }
-        this.dispose();
+      if (result.button.accept && this.session) {
+        void this.session.kernel.interrupt();
       }
+      this.dispose();
     });
   }
 
