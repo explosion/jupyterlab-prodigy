@@ -7,13 +7,13 @@ import {
 import {
   Dialog,
   IClientSession,
-  InstanceTracker,
-  showDialog
+  showDialog,
+  WidgetTracker
 } from '@jupyterlab/apputils';
 
 import { INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
 
-import { Kernel } from '@jupyterlab/services';
+import { Kernel, KernelMessage } from '@jupyterlab/services';
 
 import { IConsoleTracker, ConsolePanel } from '@jupyterlab/console';
 
@@ -111,7 +111,7 @@ function activate(
   notebooks: INotebookTracker,
   consoles: IConsoleTracker
 ) {
-  const tracker = new InstanceTracker<ProdigyIFrameWidget>({
+  const tracker = new WidgetTracker<ProdigyIFrameWidget>({
     namespace: 'prodigy-widget'
   });
 
@@ -134,12 +134,12 @@ function activate(
               const { msg } = args;
               if (
                 msg.header.msg_type === 'stream' &&
-                (msg.content.text as string).match(
+                (msg as KernelMessage.IStreamMsg).content.text.match(
                   /Open the app in your browser and start annotating!/
                 )
               ) {
                 const id = msg.header.msg_id;
-                const url = (msg.content.text as string).match(
+                const url = (msg as KernelMessage.IStreamMsg).content.text .match(
                   /Starting the web server at (.+) \.\.\./
                 )[1];
                 const widget = new ProdigyIFrameWidget(id, url, session);
@@ -172,7 +172,7 @@ function activate(
         id: widget.id,
         url: widget.url
       }),
-      name: widget => widget.title
+      name: widget => widget.title.label
     });
   }
 

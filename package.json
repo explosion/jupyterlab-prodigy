@@ -33,9 +33,9 @@
     "watch": "tsc -w"
   },
   "dependencies": {
-    "@jupyterlab/application": "^1.0.0-alpha.3",
-    "@jupyterlab/notebook": "^1.0.0-alpha.3",
-    "@jupyterlab/console": "^1.0.0-alpha.3"
+    "@jupyterlab/application": "^1.0.0-rc.0",
+    "@jupyterlab/notebook": "^1.0.0-rc.0",
+    "@jupyterlab/console": "^1.0.0-rc.0"
   },
   "devDependencies": {
     "prettier": "^1.11.1",
