@@ -139,7 +139,7 @@ function activate(
                 )
               ) {
                 const id = msg.header.msg_id;
-                const url = (msg as KernelMessage.IStreamMsg).content.text .match(
+                const url = (msg as KernelMessage.IStreamMsg).content.text.match(
                   /Starting the web server at (.+) \.\.\./
                 )[1];
                 const widget = new ProdigyIFrameWidget(id, url, session);
