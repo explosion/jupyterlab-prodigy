@@ -38,7 +38,7 @@ Python library. When the server starts, a new tab with the Prodigy app will be o
 
 ### In a notebook or console cell
 
-```python
+```
 !prodigy ner.teach my_set en_core_web_sm news_headlines.jsonl
 ```
 
