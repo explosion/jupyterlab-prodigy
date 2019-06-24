@@ -51,7 +51,7 @@ jupyter lab --watch
 ## Usage
 
 See the [Prodigy docs](https://prodi.gy/docs/) to learn more about how to use
-Prodigy. 
+Prodigy.
 
 Prodigy can be run using the `prodigy` command line utility or the
 Python library. A Prodigy command looks like `prodigy my_recipe my_dataset /path/to/data.jsonl`.
@@ -71,6 +71,6 @@ prodigy ner.teach my_set en_core_web_sm news_headlines.jsonl
 Or you can use the Prodigy Python library in a notebook or console:
 
 ```python
-prodigy.serve('ner.teach', 'my_set', 'en_core_web_sm', 'news_headlines.jsonl', 
+prodigy.serve('ner.teach', 'my_set', 'en_core_web_sm', 'news_headlines.jsonl',
               None, None, ['PERSON', 'ORG'], None, None)
 ```
