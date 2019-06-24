@@ -8,18 +8,10 @@ A JupyterLab extension for annotating machine learning training sets using [Prod
 
 ## Requirements
 
-- JupyterLab
+- JupyterLab >= 1.0.0
 - Prodigy
 
 ## Install
-
-First, install the Python package:
-
-```bash
-pip install jupyterlab-prodigy # or conda install -c conda-forge jupyterlab-prodigy
-```
-
-Then, install the JupyterLab extension
 
 ```bash
 jupyter labextension install jupyterlab-prodigy
@@ -42,7 +34,7 @@ jupyter labextension link .
 To rebuild the JupyterLab extension:
 
 ```bash
-npm run build
+npm run build # or yarn build
 jupyter lab build
 ```
 
@@ -58,8 +50,27 @@ jupyter lab --watch
 
 ## Usage
 
-In a notebook cell:
+See the [Prodigy docs](https://prodi.gy/docs/) to learn more about how to use
+Prodigy. 
+
+Prodigy can be run using the `prodigy` command line utility or the
+Python library. A Prodigy command looks like `prodigy my_recipe my_dataset /path/to/data.jsonl`.
+
+In a notebook or console cell:
 
 ```python
-!prodigy custom-recipe my_dataset /path/to/data.jsonl
+!prodigy ner.teach my_set en_core_web_sm news_headlines.jsonl
+```
+
+Or from the terminal:
+
+```bash
+prodigy ner.teach my_set en_core_web_sm news_headlines.jsonl
+```
+
+Or you can use the Prodigy Python library in a notebook or console:
+
+```python
+prodigy.serve('ner.teach', 'my_set', 'en_core_web_sm', 'news_headlines.jsonl', 
+              None, None, ['PERSON', 'ORG'], None, None)
 ```

@@ -1,13 +1,19 @@
 import {
+  ILayoutRestorer,
   JupyterFrontEnd,
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
-import { Dialog, IClientSession, showDialog } from '@jupyterlab/apputils';
+import {
+  Dialog,
+  IClientSession,
+  showDialog,
+  WidgetTracker
+} from '@jupyterlab/apputils';
 
 import { INotebookTracker, NotebookPanel } from '@jupyterlab/notebook';
 
-import { Kernel } from '@jupyterlab/services';
+import { Kernel, KernelMessage } from '@jupyterlab/services';
 
 import { IConsoleTracker, ConsolePanel } from '@jupyterlab/console';
 
@@ -24,7 +30,7 @@ class ProdigyIFrameWidget extends Widget {
   constructor(
     id: string,
     url: string = '//localhost:8080',
-    session: IClientSession
+    session?: IClientSession
   ) {
     super();
     this.id = id;
@@ -43,6 +49,7 @@ class ProdigyIFrameWidget extends Widget {
     this.iframe.setAttribute('baseURI', url);
     this.node.appendChild(this.iframe);
 
+    this.url = url;
     this.port = url.match(/\/\/.+:(\d{4})/)[1];
 
     this.session = session;
@@ -67,15 +74,10 @@ class ProdigyIFrameWidget extends Widget {
         Dialog.okButton({ label: 'Yes' })
       ]
     }).then(result => {
-      if (result.button.accept) {
-        this.session.kernel.requestExecute(
-          {
-            code: `!lsof -t -i tcp:${this.port} | xargs kill`
-          },
-          true
-        );
-        this.dispose();
+      if (result.button.accept && this.session) {
+        void this.session.kernel.interrupt();
       }
+      this.dispose();
     });
   }
 
@@ -85,7 +87,12 @@ class ProdigyIFrameWidget extends Widget {
   readonly iframe: HTMLIFrameElement;
 
   /**
-   * The iframe element associated with the widget.
+   * The Prodigy server URL.
+   */
+  readonly url: string;
+
+  /**
+   * The Prodigy server port.
    */
   readonly port: string;
 
@@ -100,9 +107,14 @@ class ProdigyIFrameWidget extends Widget {
  */
 function activate(
   app: JupyterFrontEnd,
+  restorer: ILayoutRestorer,
   notebooks: INotebookTracker,
   consoles: IConsoleTracker
 ) {
+  const tracker = new WidgetTracker<ProdigyIFrameWidget>({
+    namespace: 'prodigy-widget'
+  });
+
   // Watch messages for notebook and console sessions
   function watchMessages(
     sender: INotebookTracker | IConsoleTracker,
@@ -117,16 +129,17 @@ function activate(
         session.kernel.ready
           .then(() => Kernel.connectTo(kernel.model))
           .then(kernel => {
+            // On kernel message
             kernel.anyMessage.connect((sender, args) => {
               const { msg } = args;
               if (
                 msg.header.msg_type === 'stream' &&
-                (msg.content.text as string).match(
+                (msg as KernelMessage.IStreamMsg).content.text.match(
                   /Open the app in your browser and start annotating!/
                 )
               ) {
                 const id = msg.header.msg_id;
-                const url = (msg.content.text as string).match(
+                const url = (msg as KernelMessage.IStreamMsg).content.text .match(
                   /Starting the web server at (.+) \.\.\./
                 )[1];
                 const widget = new ProdigyIFrameWidget(id, url, session);
@@ -134,6 +147,7 @@ function activate(
                   activate: true,
                   mode: 'split-right'
                 });
+                void tracker.add(widget);
                 widget.update();
               }
             });
@@ -144,11 +158,43 @@ function activate(
     });
   }
 
-  // Watch notebook creation
+  // Watch notebook creation.
   notebooks.widgetAdded.connect(watchMessages);
 
-  // Watch console creation
+  // Watch console creation.
   consoles.widgetAdded.connect(watchMessages);
+
+  // Handle state restoration.
+  if (restorer) {
+    restorer.restore(tracker, {
+      command: 'prodigy:open',
+      args: widget => ({
+        id: widget.id,
+        url: widget.url
+      }),
+      name: widget => widget.title.label
+    });
+  }
+
+  app.commands.addCommand('prodigy:open', {
+    label: 'Open a new Prodigy panel',
+    execute: args => {
+      if (tracker.currentWidget) {
+        return app.shell.activateById(tracker.currentWidget.id);
+      }
+      const widget = new ProdigyIFrameWidget(
+        args['id'] as string,
+        args['url'] as string
+      );
+      app.shell.add(widget, 'main', {
+        activate: true,
+        mode: 'split-right'
+      });
+      void tracker.add(widget);
+      widget.update();
+    },
+    isEnabled: () => true
+  });
 }
 
 /**
@@ -157,7 +203,7 @@ function activate(
 const extension: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab-prodigy',
   autoStart: true,
-  requires: [INotebookTracker, IConsoleTracker],
+  requires: [ILayoutRestorer, INotebookTracker, IConsoleTracker],
   activate: activate
 };
 
