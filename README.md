@@ -1,6 +1,7 @@
 # jupyterlab-prodigy
 
 [![Binder](https://beta.mybinder.org/badge.svg)](https://mybinder.org/v2/gh/gnestor/jupyterlab-prodigy/master?urlpath=lab)
+[![npm](https://img.shields.io/npm/v/jupyterlab-prodigy.svg)](https://www.npmjs.com/package/jupyterlab-prodigy)
 
 A JupyterLab extension for annotating machine learning training sets using [Prodigy](https://prodi.gy/).
 
