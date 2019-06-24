@@ -8,7 +8,7 @@ A JupyterLab extension for annotating machine learning training sets using [Prod
 
 ## Requirements
 
-- JupyterLab
+- JupyterLab >= 1.0.0
 - Prodigy
 
 ## Install
