@@ -13,9 +13,6 @@ A JupyterLab extension for annotating machine learning training sets using [Prod
 
 ## Install
 
-**jupyterlab-prodigy is in beta** and not yet published. Follow the *Develop*
-instructions below ot install.
-
 ```bash
 jupyter labextension install jupyterlab-prodigy
 ```
