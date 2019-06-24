@@ -34,13 +34,26 @@
   },
   "dependencies": {
     "@jupyterlab/application": "^1.0.0-rc.0",
-    "@jupyterlab/notebook": "^1.0.0-rc.0",
-    "@jupyterlab/console": "^1.0.0-rc.0"
+    "@jupyterlab/console": "^1.0.0-rc.0",
+    "@jupyterlab/notebook": "^1.0.0-rc.0"
   },
   "devDependencies": {
+    "husky": "^2.5.0",
+    "lint-staged": "^8.2.1",
     "prettier": "^1.11.1",
     "rimraf": "^2.6.1",
     "typescript": "~3.1.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "{!(package),src/**,!(lib)/**}{.js,.jsx,.ts,.tsx,.css,.json,.md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "jupyterlab": {
     "extension": true
