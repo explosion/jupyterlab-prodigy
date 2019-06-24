@@ -9,9 +9,9 @@
     "prodigy",
     "annotation"
   ],
-  "homepage": "https://github.com/explosionai/jupyterlab-prodigy",
+  "homepage": "https://github.com/explosion/jupyterlab-prodigy",
   "bugs": {
-    "url": "https://github.com/explosionai/jupyterlab-prodigy/issues"
+    "url": "https://github.com/explosion/jupyterlab-prodigy/issues"
   },
   "license": "MIT",
   "author": "Explosion AI",
@@ -23,7 +23,7 @@
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/explosionai/jupyterlab-prodigy.git"
+    "url": "git+https://github.com/explosion/jupyterlab-prodigy.git"
   },
   "scripts": {
     "build": "tsc",
