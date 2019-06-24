@@ -15,7 +15,7 @@ for building this extension for us!
 [![Binder](https://beta.mybinder.org/badge.svg)](https://mybinder.org/v2/gh/gnestor/jupyterlab-prodigy/master?urlpath=lab)
 [![npm](https://img.shields.io/npm/v/jupyterlab-prodigy.svg?style=flat-square&logo=appveyor)](https://www.npmjs.com/package/jupyterlab-prodigy)
 
-![demo](http://g.recordit.co/y0WM1ca9C8.gif)
+![jupyterlab-prodigy](https://user-images.githubusercontent.com/13643239/60034585-499b4f80-96ab-11e9-9624-711f71d01b9b.gif)
 
 ## ⌛️ Installation
 
