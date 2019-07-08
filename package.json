@@ -33,9 +33,9 @@
     "watch": "tsc -w"
   },
   "dependencies": {
-    "@jupyterlab/application": "^1.0.0-rc.0",
-    "@jupyterlab/console": "^1.0.0-rc.0",
-    "@jupyterlab/notebook": "^1.0.0-rc.0"
+    "@jupyterlab/application": "^1.0.0",
+    "@jupyterlab/console": "^1.0.0",
+    "@jupyterlab/notebook": "^1.0.0"
   },
   "devDependencies": {
     "husky": "^2.5.0",
