@@ -1,6 +1,6 @@
 {
   "name": "jupyterlab-prodigy",
-  "version": "1.0.0",
+  "version": "2.0.0-beta.01",
   "description": "A JupyterLab extension for annotating machine learning training sets using Prodigy",
   "keywords": [
     "jupyter",
@@ -17,32 +17,43 @@
   "author": "Explosion AI",
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
-    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
+    "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}",
+    "schema/*.json"
   ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "style": "style/index.css",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/explosion/jupyterlab-prodigy.git"
   },
   "scripts": {
     "build": "tsc",
-    "clean": "rimraf lib",
-    "prepare": "npm run clean && npm run build",
+    "clean": "rimraf lib tsconfig.tsbuildinfo",
+    "eslint": "eslint . --ext .ts,.tsx --fix",
+    "eslint:check": "eslint . --ext .ts,.tsx",
+    "prepare": "jlpm run clean && jlpm run build",
     "prettier": "prettier --write '{!(package),src/**,!(lib)/**}{.js,.jsx,.ts,.tsx,.css,.json,.md}'",
     "watch": "tsc -w"
   },
   "dependencies": {
-    "@jupyterlab/application": "^1.0.0",
-    "@jupyterlab/console": "^1.0.0",
-    "@jupyterlab/notebook": "^1.0.0"
+    "@jupyterlab/application": "^2.1.2",
+    "@jupyterlab/apputils": "^2.1.1",
+    "@jupyterlab/settingregistry": "^2.1.0",
+    "@lumino/messaging": "^1.4.1",
+    "@lumino/widgets": "^1.13.0"
   },
   "devDependencies": {
-    "husky": "^2.5.0",
+    "husky": "^2.7.0",
     "lint-staged": "^8.2.1",
-    "prettier": "^1.11.1",
-    "rimraf": "^2.6.1",
-    "typescript": "~3.1.1"
+    "prettier": "^1.19.1",
+    "rimraf": "^2.7.1",
+    "@typescript-eslint/eslint-plugin": "^2.25.0",
+    "@typescript-eslint/parser": "^2.25.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "typescript": "~3.7.0"
   },
   "husky": {
     "hooks": {
@@ -55,7 +66,11 @@
       "git add"
     ]
   },
+  "sideEffects": [
+    "style/*.css"
+  ],
   "jupyterlab": {
-    "extension": true
+    "extension": true,
+    "schemaDir": "schema"
   }
 }
