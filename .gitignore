@@ -4,3 +4,4 @@ node_modules/
 .ipynb_checkpoints
 */__pycache__/*
 lib/
+*.tsbuildinfo
