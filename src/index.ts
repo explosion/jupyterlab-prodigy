@@ -4,15 +4,20 @@ import {
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 import {
+  Dialog,
   ICommandPalette,
   MainAreaWidget,
+  showDialog,
   WidgetTracker
 } from '@jupyterlab/apputils';
+import { ILauncher } from '@jupyterlab/launcher';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
+import { Message } from '@lumino/messaging';
 import { Widget } from '@lumino/widgets';
 import '../style/index.css';
 
 const defaultProdigyUrl = 'http://localhost:8080';
+const prodigyIconClass = 'jp-prodigyIcon';
 
 class ProdigyIFrameWidget extends Widget {
   /**
@@ -21,7 +26,7 @@ class ProdigyIFrameWidget extends Widget {
   constructor(public url: string = defaultProdigyUrl) {
     super();
     this.title.label = 'Prodigy';
-    this.title.iconClass = 'jp-prodigyIcon';
+    this.title.iconClass = prodigyIconClass;
     this.title.closable = true;
     this.addClass('jp-prodigyWidget');
     // Add jp-IFrame class to keep drag events from being lost to the iframe
@@ -42,6 +47,26 @@ class ProdigyIFrameWidget extends Widget {
   readonly iframe: HTMLIFrameElement;
 }
 
+export class MainAreaProdigyWidget extends MainAreaWidget<ProdigyIFrameWidget> {
+  onCloseRequest(msg: Message): void {
+    void showDialog({
+      title: 'Unsaved Changes',
+      body: 'You could have unsaved changes, do you want to close either way?',
+      buttons: [
+        Dialog.cancelButton({ label: 'No' }),
+        Dialog.okButton({ label: 'Yes' })
+      ]
+    }).then(result => {
+      if (result.button.accept) {
+        this.dispose();
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+}
+
 /**
  * Activate the extension.
  */
@@ -49,25 +74,27 @@ async function activate(
   app: JupyterFrontEnd,
   palette: ICommandPalette,
   restorer: ILayoutRestorer,
-  settings: ISettingRegistry
+  settings: ISettingRegistry,
+  launcher: ILauncher
 ) {
   const prodigyConfig = await settings.get(
     'jupyterlab-prodigy:plugin',
     'prodigyConfig'
   );
   const url = (prodigyConfig.composite as any)?.url || defaultProdigyUrl;
-  const tracker = new WidgetTracker<MainAreaWidget<ProdigyIFrameWidget>>({
+  const tracker = new WidgetTracker<MainAreaProdigyWidget>({
     namespace: 'prodigy-widget'
   });
-  let widget: MainAreaWidget<ProdigyIFrameWidget>;
+  let widget: MainAreaProdigyWidget;
 
   const command = 'prodigy:open';
   app.commands.addCommand(command, {
     label: 'Open Prodigy',
+    iconClass: prodigyIconClass,
     execute: () => {
       if (!widget || widget.isDisposed) {
         const content = new ProdigyIFrameWidget(url);
-        widget = new MainAreaWidget({ content });
+        widget = new MainAreaProdigyWidget({ content });
         widget.id = 'jupyterlab-prodigy-widget';
         widget.title.label = 'Prodigy';
         widget.title.closable = true;
@@ -94,6 +121,13 @@ async function activate(
     command,
     name: () => 'prodigy-widget'
   });
+
+  // Launcher
+  launcher.add({
+    command,
+    category: 'Other',
+    rank: -10
+  });
 }
 
 /**
@@ -102,7 +136,7 @@ async function activate(
 const extension: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab-prodigy',
   autoStart: true,
-  requires: [ICommandPalette, ILayoutRestorer, ISettingRegistry],
+  requires: [ICommandPalette, ILayoutRestorer, ISettingRegistry, ILauncher],
   activate: activate
 };
 
