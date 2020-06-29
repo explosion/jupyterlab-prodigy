@@ -1,5 +1,6 @@
 :root {
-  --jp-icon-explosionai: url('./icon.svg');
+  --jp-icon-explosionai: url('./icon.png');
+  --jp-icon-sparkles: url('./icon.png');
 }
 
 .jp-prodigyWidget iframe {
