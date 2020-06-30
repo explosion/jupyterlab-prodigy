@@ -77,7 +77,7 @@ export class MainAreaProdigyWidget extends MainAreaWidget<ProdigyIFrameWidget> {
   onCloseRequest(msg: Message): void {
     void showDialog({
       title: 'Possible unsaved changes',
-      body: 'You could have unsaved changes, do you want to close either way?',
+      body: 'By closing the tab, you may lose unsaved annotations. Don't forget to hit the "save" button in the sidebar to submit your work.',
       buttons: [
         Dialog.cancelButton({ label: 'No' }),
         Dialog.okButton({ label: 'Yes' })
