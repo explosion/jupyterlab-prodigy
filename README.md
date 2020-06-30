@@ -1,24 +1,16 @@
-# jupyterlab-prodigy
+# JupyterLab extension for the Prodigy annotation tool
 
-This repo contains a [JupyterLab](https://jupyterlab.readthedocs.io/en/stable/)
-extension for [Prodigy](https://prodi.gy), our scriptable annotation tool for
-creating training data for machine learning models. In order to use this
-extension, you'll need a license for Prodigy – [see this page](https://prodi.gy/buy)
-for more details. For questions, please use the
-[Prodigy Support Forum](https://support.prodi.gy). If you've found a bug, feel
-free to submit a
-[pull request](https://github.com/explosion/jupyterlab-prodigy/pulls).
+This repo contains a [JupyterLab](https://jupyterlab.readthedocs.io/en/stable/) extension for [Prodigy](https://prodi.gy), our scriptable annotation tool for creating training data for machine learning models. It lets you run Prodigy within a JupyterLab tab, and annotate as you develop your models and applications. In order to use this
+extension, you'll need a license for Prodigy – [see this page](https://prodi.gy/buy) for more details. For questions, please use the [Prodigy Support Forum](https://support.prodi.gy). If you've found a bug, feel free to submit a [pull request](https://github.com/explosion/jupyterlab-prodigy/pulls).
 
 🙏 **Special thanks** to Jupyter core dev [Grant Nestor](https://www.grantnestor.com/)
 for helping us build this extension!
 
 [![npm](https://img.shields.io/npm/v/jupyterlab-prodigy.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/jupyterlab-prodigy)
 
-<img src="https://user-images.githubusercontent.com/13643239/60034585-499b4f80-96ab-11e9-9624-711f71d01b9b.gif" height="275" align="left">
+<img src="https://user-images.githubusercontent.com/13643239/60034585-499b4f80-96ab-11e9-9624-711f71d01b9b.gif" width="854">
 
-<img src="https://user-images.githubusercontent.com/13643239/86128438-a5c85900-bae1-11ea-82d9-a466e31e0861.png" height="275" />
-
----
+<img src="https://user-images.githubusercontent.com/13643239/86128438-a5c85900-bae1-11ea-82d9-a466e31e0861.png" width="854" />
 
 ## ⌛️ Installation
 
