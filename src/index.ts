@@ -17,6 +17,7 @@ import { Widget } from '@lumino/widgets';
 import '../style/index.css';
 
 const defaultProdigyUrl = 'http://localhost:8080';
+const prodigyDocsUrl = 'https://prodi.gy/docs';
 const prodigyIconClass = 'jp-prodigyIcon';
 
 class ProdigyIFrameWidget extends Widget {
@@ -26,6 +27,31 @@ class ProdigyIFrameWidget extends Widget {
   constructor(public url: string = defaultProdigyUrl) {
     super();
     this.title.label = 'Prodigy';
+    this.title.iconClass = prodigyIconClass;
+    this.title.closable = true;
+    this.addClass('jp-prodigyWidget');
+    // Add jp-IFrame class to keep drag events from being lost to the iframe
+    // See https://github.com/phosphorjs/phosphor/issues/305
+    // See https://github.com/jupyterlab/jupyterlab/blob/master/packages/apputils/style/iframe.css#L17-L35
+    this.addClass('jp-IFrame');
+
+    this.iframe = document.createElement('iframe');
+    this.iframe.id = 'iframe-' + this.id;
+    this.iframe.src = this.url;
+    this.iframe.setAttribute('baseURI', this.url);
+    this.node.appendChild(this.iframe);
+  }
+
+  /**
+   * The iframe element associated with the widget.
+   */
+  readonly iframe: HTMLIFrameElement;
+}
+
+class ProdigyDocsIFrameWidget extends Widget {
+  constructor(public url: string = prodigyDocsUrl) {
+    super();
+    this.title.label = 'Prodigy Docs';
     this.title.iconClass = prodigyIconClass;
     this.title.closable = true;
     this.addClass('jp-prodigyWidget');
@@ -85,7 +111,13 @@ async function activate(
   const tracker = new WidgetTracker<MainAreaProdigyWidget>({
     namespace: 'prodigy-widget'
   });
+  const docsTracker = new WidgetTracker<
+    MainAreaWidget<ProdigyDocsIFrameWidget>
+  >({
+    namespace: 'prodigy-docs-widget'
+  });
   let widget: MainAreaProdigyWidget;
+  let docsWidget: MainAreaWidget<ProdigyDocsIFrameWidget>;
 
   const command = 'prodigy:open';
   app.commands.addCommand(command, {
@@ -115,18 +147,56 @@ async function activate(
     }
   });
 
+  const docsCommand = 'prodigy:open-docs';
+  app.commands.addCommand(docsCommand, {
+    label: 'Open Prodigy Docs',
+    iconClass: prodigyIconClass,
+    execute: () => {
+      if (!docsWidget || docsWidget.isDisposed) {
+        const content = new ProdigyDocsIFrameWidget();
+        docsWidget = new MainAreaWidget({ content });
+        docsWidget.id = 'jupyterlab-prodigy-docs-widget';
+        docsWidget.title.label = 'Prodigy Docs';
+        docsWidget.title.closable = true;
+      }
+
+      if (!docsTracker.has(docsWidget)) {
+        docsTracker.add(docsWidget);
+      }
+
+      if (!docsWidget.isAttached) {
+        app.shell.add(docsWidget, 'main', {
+          mode: 'split-top'
+        });
+      }
+      docsWidget.content.update();
+
+      app.shell.activateById(docsWidget.id);
+    }
+  });
+
   palette.addItem({ command, category: 'Prodigy' });
+  palette.addItem({ command: docsCommand, category: 'Prodigy' });
 
   restorer.restore(tracker, {
     command,
     name: () => 'prodigy-widget'
   });
+  restorer.restore(docsTracker, {
+    command: docsCommand,
+    name: () => 'prodigy-docs-widget'
+  });
 
   // Launcher
   launcher.add({
     command,
-    category: 'Other',
+    category: 'Prodigy',
     rank: -10
+  });
+  launcher.add({
+    command: docsCommand,
+    category: 'Prodigy',
+    rank: -5
   });
 }
 
