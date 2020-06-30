@@ -19,6 +19,7 @@ import '../style/index.css';
 const defaultProdigyUrl = 'http://localhost:8080';
 const prodigyDocsUrl = 'https://prodi.gy/docs';
 const prodigyIconClass = 'jp-prodigyIcon';
+const prodigyDocsIconClass = 'jp-docsIcon';
 
 class ProdigyIFrameWidget extends Widget {
   /**
@@ -52,7 +53,7 @@ class ProdigyDocsIFrameWidget extends Widget {
   constructor(public url: string = prodigyDocsUrl) {
     super();
     this.title.label = 'Prodigy Docs';
-    this.title.iconClass = prodigyIconClass;
+    this.title.iconClass = prodigyDocsIconClass;
     this.title.closable = true;
     this.addClass('jp-prodigyWidget');
     // Add jp-IFrame class to keep drag events from being lost to the iframe
@@ -150,7 +151,7 @@ async function activate(
   const docsCommand = 'prodigy:open-docs';
   app.commands.addCommand(docsCommand, {
     label: 'Open Prodigy Docs',
-    iconClass: prodigyIconClass,
+    iconClass: prodigyDocsIconClass,
     execute: () => {
       if (!docsWidget || docsWidget.isDisposed) {
         const content = new ProdigyDocsIFrameWidget();

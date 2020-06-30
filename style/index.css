@@ -1,6 +1,6 @@
 :root {
   --jp-icon-explosionai: url('./icon.png');
-  --jp-icon-sparkles: url('./icon.png');
+  --jp-icon-docs: url('./docs.svg');
 }
 
 .jp-prodigyWidget iframe {
@@ -12,5 +12,10 @@
 
 .jp-prodigyIcon {
   background-image: var(--jp-icon-explosionai);
+  background-size: contain;
+}
+
+.jp-docsIcon {
+  background-image: var(--jp-icon-docs);
   background-size: contain;
 }
