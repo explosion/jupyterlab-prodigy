@@ -76,7 +76,7 @@ class ProdigyDocsIFrameWidget extends Widget {
 export class MainAreaProdigyWidget extends MainAreaWidget<ProdigyIFrameWidget> {
   onCloseRequest(msg: Message): void {
     void showDialog({
-      title: 'Unsaved Changes',
+      title: 'Possible unsaved changes',
       body: 'You could have unsaved changes, do you want to close either way?',
       buttons: [
         Dialog.cancelButton({ label: 'No' }),
