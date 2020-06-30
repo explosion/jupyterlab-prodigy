@@ -10,12 +10,15 @@ free to submit a
 [pull request](https://github.com/explosion/jupyterlab-prodigy/pulls).
 
 🙏 **Special thanks** to Jupyter core dev [Grant Nestor](https://www.grantnestor.com/)
-for building this extension for us!
+for helping us build this extension!
 
-[![Binder](https://beta.mybinder.org/badge.svg)](https://mybinder.org/v2/gh/gnestor/jupyterlab-prodigy/master?urlpath=lab)
-[![npm](https://img.shields.io/npm/v/jupyterlab-prodigy.svg?style=flat-square&logo=appveyor)](https://www.npmjs.com/package/jupyterlab-prodigy)
+[![npm](https://img.shields.io/npm/v/jupyterlab-prodigy.svg?style=flat-square&logo=npm)](https://www.npmjs.com/package/jupyterlab-prodigy)
 
-![jupyterlab-prodigy](https://user-images.githubusercontent.com/13643239/60034585-499b4f80-96ab-11e9-9624-711f71d01b9b.gif)
+<img src="https://user-images.githubusercontent.com/13643239/60034585-499b4f80-96ab-11e9-9624-711f71d01b9b.gif" height="275" align="left">
+
+<img src="https://user-images.githubusercontent.com/13643239/86128438-a5c85900-bae1-11ea-82d9-a466e31e0861.png" height="275" />
+
+---
 
 ## ⌛️ Installation
 
@@ -34,7 +37,7 @@ jupyter labextension install jupyterlab-prodigy
 Start a Prodigy session in a terminal, e.g.:
 
 ```console
-$ prodigy ner.teach my_set en_core_web_sm news_headlines.jsonl
+$ prodigy ner.manual my_set blank:en ./news_headlines.jsonl --label PERSON,ORG,PRODUCT
 ```
 
 In another terminal session, start JupyterLab:
