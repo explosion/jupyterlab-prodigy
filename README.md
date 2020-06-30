@@ -19,41 +19,51 @@ for building this extension for us!
 
 ## ⌛️ Installation
 
-To use this extension, you need [JupyterLab](https://jupyterlab.readthedocs.io/en/stable/) >= 1.0.0 ⚠️ and [Prodigy](https://prodi.gy).
+To use this extension, you need [JupyterLab](https://jupyterlab.readthedocs.io/en/stable/) >= 2.0.0 ⚠️ and [Prodigy](https://prodi.gy).
 
 ```bash
-pip install jupyterlab==1.0.0rc0
+pip install jupyterlab>=2.0.0
 ```
 
 ```bash
 jupyter labextension install jupyterlab-prodigy
 ```
 
-## 📋Usage
+## 📋 Usage
 
-Prodigy can be run using the `prodigy` command line utility or the
-Python library. When the server starts, a new tab with the Prodigy app will be opened automatically in your JupyterLab workspace.
+Start a Prodigy session in a terminal, e.g.:
 
-### In a notebook or console cell
-
-```
-!prodigy ner.teach my_set en_core_web_sm news_headlines.jsonl
+```console
+$ prodigy ner.teach my_set en_core_web_sm news_headlines.jsonl
 ```
 
-### From the JupyterLab terminal
+In another terminal session, start JupyterLab:
 
-```bash
-prodigy ner.teach my_set en_core_web_sm news_headlines.jsonl
+```console
+$ jupyter lab
 ```
 
-### From Python
+Then, inside of JupyterLab, open the `Commands` on the left sidebar, and search/type:
 
-```python
-prodigy.serve('ner.teach', 'my_set', 'en_core_web_sm', 'news_headlines.jsonl',
-              None, None, ['PERSON', 'ORG'], None, None)
+<kbd>Open Prodigy</kbd>
+
+Execute it, you will have a new Prodigy panel on the side.
+
+## ⚙ Configuration
+
+If your Prodigy is being served at a URL different than the default (e.g. behind a reverse proxy) you can configure the URL to use in the settings.
+
+Open the `Settings` menu, go to `Advanced Settings Editor`, select the settings for `Prodigy Jupyter Extension`, and there you can add your custom URL, e.g.:
+
+```JSON
+{
+    "prodigyConfig": {
+        "url": "https://prodigy.example.com"
+    }
+}
 ```
 
-## 👩‍💻Develop
+## 👩‍💻 Develop
 
 ```bash
 git clone https://github.com/explosion/jupyterlab-prodigy
@@ -64,7 +74,7 @@ npm install # or yarn
 
 # Build JupyterLab extension
 npm run build # or yarn build
-jupyter labextension link .
+jupyter labextension install .
 ```
 
 To rebuild the JupyterLab extension:
