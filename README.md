@@ -29,7 +29,7 @@ jupyter labextension install jupyterlab-prodigy
 Start a Prodigy session in a terminal, e.g.:
 
 ```console
-$ prodigy ner.manual my_set blank:en ./news_headlines.jsonl --label PERSON,ORG,PRODUCT
+$ prodigy ner.manual my_set blank:en notebooks/news_headlines.jsonl --label PERSON,ORG,PRODUCT
 ```
 
 In another terminal session, start JupyterLab:
