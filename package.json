@@ -1,6 +1,6 @@
 {
   "name": "jupyterlab-prodigy",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "A JupyterLab extension for annotating machine learning training sets using Prodigy",
   "keywords": [
     "jupyter",
