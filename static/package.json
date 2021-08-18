@@ -80,6 +80,11 @@
   ],
   "jupyterlab": {
     "extension": true,
-    "schemaDir": "schema"
+    "schemaDir": "schema",
+    "_build": {
+      "load": "static/remoteEntry.1f537dbb781e4df03c67.js",
+      "extension": "./extension",
+      "style": "./style"
+    }
   }
 }

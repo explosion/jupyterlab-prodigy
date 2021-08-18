@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "Prodigy Jupyter Extension",
+  "description": "Settings for the Prodigy Jupyter extension.",
+  "definitions": {
+    "prodigyConfig": {
+      "properties": {
+        "url": {
+          "title": "Prodigy URL",
+          "description": "The URL where Prodigy is being served. Update this if it is behind a reverse proxy.",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  },
+  "properties": {
+    "prodigyConfig": {
+      "title": "Prodigy Configuration",
+      "description": "The configuration for the Prodigy Jupyter extension.",
+      "$ref": "#/definitions/prodigyConfig",
+      "default": {
+        "url": "http://localhost:8080"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "type": "object"
+}
