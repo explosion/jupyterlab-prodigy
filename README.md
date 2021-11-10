@@ -1,5 +1,7 @@
 # JupyterLab extension for the Prodigy annotation tool
 
+![Github Actions Status](https://github.com/explosion/jupyterlab-prodigy/workflows/Build/badge.svg)
+
 This repo contains a [JupyterLab](https://jupyterlab.readthedocs.io/en/stable/) extension for [Prodigy](https://prodi.gy), our scriptable annotation tool for creating training data for machine learning models. It lets you run Prodigy within a JupyterLab tab, and annotate as you develop your models and applications. In order to use this
 extension, you'll need a license for Prodigy – [see this page](https://prodi.gy/buy) for more details. For questions, please use the [Prodigy Support Forum](https://support.prodi.gy). If you've found a bug, feel free to submit a [pull request](https://github.com/explosion/jupyterlab-prodigy/pulls).
 
@@ -14,14 +16,16 @@ for helping us build this extension!
 
 ## ⌛️ Installation
 
-To use this extension, you need [JupyterLab](https://jupyterlab.readthedocs.io/en/stable/) >= 2.0.0 ⚠️ and [Prodigy](https://prodi.gy).
+To use this extension, you need
+[JupyterLab](https://jupyterlab.readthedocs.io/en/stable/) >= 3.0 and
+[Prodigy](https://prodi.gy).
 
 ```bash
-pip install jupyterlab>=2.0.0
+pip install jupyterlab>=3.0.0
 ```
 
 ```bash
-jupyter labextension install jupyterlab-prodigy
+pip install jupyterlab-prodigy
 ```
 
 ## 📋 Usage
@@ -60,31 +64,42 @@ Open the `Settings` menu, go to `Advanced Settings Editor`, select the settings 
 
 ## 👩‍💻 Develop
 
+Note: You will need NodeJS to build the extension package.
+
+The `jlpm` command is JupyterLab's pinned version of
+[yarn](https://yarnpkg.com/) that is installed with JupyterLab. You may use
+`yarn` or `npm` in lieu of `jlpm` below.
+
 ```bash
-git clone https://github.com/explosion/jupyterlab-prodigy
-cd jupyterlab-prodigy
-
-# Install Javascript dependencies
-npm install # or yarn
-
-# Build JupyterLab extension
-npm run build # or yarn build
-jupyter labextension install .
+# Clone the repo to your local environment
+# Change directory to the jupyterlab_prodigy directory
+# Install package in development mode
+pip install -e .
+# Link your development version of the extension with JupyterLab
+jupyter labextension develop . --overwrite
+# Rebuild extension Typescript source after making changes
+jlpm run build
 ```
 
-To rebuild the JupyterLab extension:
+You can watch the source directory and run JupyterLab at the same time in different terminals to watch for changes in the extension's source and automatically rebuild the extension.
 
 ```bash
-npm run build # or yarn build
-jupyter lab build
+# Watch the source directory in one terminal, automatically rebuilding when needed
+jlpm run watch
+# Run JupyterLab in another terminal
+jupyter lab
 ```
 
-To rebuild the JupyterLab extension automatically as the source changes:
+With the watch command running, every saved change will immediately be built locally and available in your running JupyterLab. Refresh JupyterLab to load the change in your browser (you may need to wait several seconds for the extension to be rebuilt).
+
+By default, the `jlpm run build` command generates the source maps for this extension to make it easier to debug using the browser dev tools. To also generate source maps for the JupyterLab core extensions, you can run the following command:
 
 ```bash
-# In one terminal tab, watch the jupyterlab-prodigy directory
-npm run watch # or yarn watch
+jupyter lab build --minimize=False
+```
 
-# In another terminal tab, run jupyterlab with the watch flag
-jupyter lab --watch
+### Uninstall
+
+```bash
+pip uninstall jupyterlab_prodigy
 ```
