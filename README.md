@@ -14,10 +14,12 @@ for helping us build this extension!
 
 ## ⌛️ Installation
 
-To use this extension, you need [JupyterLab](https://jupyterlab.readthedocs.io/en/stable/) >= 2.0.0 ⚠️ and [Prodigy](https://prodi.gy).
+To use this extension, you need
+[JupyterLab](https://jupyterlab.readthedocs.io/en/stable/) >= 2.0.0, < 3.0.0 ⚠️
+and [Prodigy](https://prodi.gy).
 
 ```bash
-pip install jupyterlab>=2.0.0
+pip install "jupyterlab>=2.0.0,<3.0.0"
 ```
 
 ```bash
