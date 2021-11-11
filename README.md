@@ -43,6 +43,16 @@ To remove the extension, run:
 pip uninstall jupyterlab-prodigy
 ```
 
+### Compatibility
+
+This extension is compatible with Jupyterlab 3.0.0 and above. If you're using
+Jupyterlab with versions `>=2.0.0` and `<3.0.0`, then you should install the
+`3.0.0` version of `jupyterlab-prodigy`
+
+```bash
+jupyter labextension install jupyterlab-prodigy@3.0.0
+```
+
 ## 📋 Usage
 
 Start a Prodigy session in a terminal, e.g.:
