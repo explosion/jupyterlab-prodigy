@@ -9,7 +9,6 @@ extension, you'll need a license for Prodigy – [see this page](https://prodi.g
 🙏 **Special thanks** to Jupyter core dev [Grant Nestor](https://www.grantnestor.com/)
 for helping us build this extension!
 
-
 <img src="https://user-images.githubusercontent.com/13643239/60034585-499b4f80-96ab-11e9-9624-711f71d01b9b.gif" width="854">
 
 <img src="https://user-images.githubusercontent.com/13643239/86128438-a5c85900-bae1-11ea-82d9-a466e31e0861.png" width="854" />
@@ -80,7 +79,9 @@ Open the `Settings` menu, go to `Advanced Settings Editor`, select the settings 
 
 ## 👩‍💻 Develop
 
-Note: You will need NodeJS to build the extension package.
+Note: You will need NodeJS to build the extension package. It is also
+highly-recommended that you work in a [virtual
+environment](https://docs.python.org/3/tutorial/venv.html) when developing.
 
 The `jlpm` command is JupyterLab's pinned version of
 [yarn](https://yarnpkg.com/) that is installed with JupyterLab. You may use
@@ -88,7 +89,9 @@ The `jlpm` command is JupyterLab's pinned version of
 
 ```bash
 # Clone the repo to your local environment
-# Change directory to the jupyterlab_prodigy directory
+# Change directory to the jupyterlab-prodigy directory
+# Install dev requirements
+pip install -r requirements-dev.txt
 # Install package in development mode
 pip install -e .
 # Link your development version of the extension with JupyterLab
