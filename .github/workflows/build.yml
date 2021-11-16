@@ -15,7 +15,7 @@ jobs:
     - name: Install node
       uses: actions/setup-node@v1
       with:
-       node-version: '10.x'
+       node-version: '16.x'
     - name: Install Python
       uses: actions/setup-python@v2
       with:
@@ -28,6 +28,3 @@ jobs:
         jlpm
         jlpm run eslint:check
         python -m pip install .
-
-        jupyter labextension list 2>&1 | grep -ie "jupyterlab_prodigy.*OK"
-        python -m jupyterlab.browser_check
