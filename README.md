@@ -67,7 +67,7 @@ In another terminal session, start JupyterLab:
 $ jupyter lab
 ```
 
-Then, inside of JupyterLab, open the `Commands` on the left sidebar, and search/type:
+Then, inside of JupyterLab, open the `Commands` toolbar via <kbd>CMD</kbd> + <kbd>SHIFT</kbd> + <kbd>C</kbd>, and search/type:
 
 <kbd>Open Prodigy</kbd>
 
